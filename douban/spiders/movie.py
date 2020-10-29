@@ -7,7 +7,7 @@ class MovieSpider(scrapy.Spider):
     name = 'movie'
     allowed_domains = ['movie.douban.com']
     # start_urls = 'https://movie.douban.com/j/search_subjects?type=movie&tag=%E7%83%AD%E9%97%A8&sort=recommend&page_limit=500&page_start={uid}'
-    start_urls = 'https://movie.douban.com/j/search_subjects?type=movie&tag=%E8%B1%86%E7%93%A3%E9%AB%98%E5%88%86&sort=recommend&page_limit=500&page_start=0'
+    start_urls = 'https://movie.douban.com/j/search_subjects?type=movie&tag=%E8%B1%86%E7%93%A3%E9%AB%98%E5%88%86&sort=recommend&page_limit=70&page_start=40'
     page_start = []
     lcom_url = []
 
@@ -27,10 +27,13 @@ class MovieSpider(scrapy.Spider):
 
     def parse_infor(self, response):
         item = DoubanItem()
-        item['title'] = response.css('#content [property="v:itemreviewed"]::text').extract_first().strip('') + response.css('#content .year::text').extract_first()
+        # item['title'] = response.css('#content [property="v:itemreviewed"]::text').extract_first().strip('') + response.css('#content .year::text').extract_first()
+        item['title'] = response.css('#content [property="v:itemreviewed"]::text').extract_first().strip('')
+        item['image_url'] = response.css('#mainpic img::attr(src)').extract_first()
+
         item['rating'] = response.css('[typeof="v:Rating"] strong::text').extract_first().strip()
         item['rating_sum'] = response.css('[typeof="v:Rating"] .rating_sum a span::text').extract_first().strip()
-
+        item['category'] = response.css('[property="v:genre"]::text').extract()
         item['director'] = response.css('#info span [rel="v:directedBy"]::text').extract()
         # item['screenwriter']
         item['actor'] = response.css('#info span [rel="v:starring"]::text').extract()
@@ -53,13 +56,9 @@ class MovieSpider(scrapy.Spider):
         titles = response.css('.main-hd a::text').extract()
         item['title'] = titles[2]
         alist = response.css('#link-report p::text').extract()
+        if alist == []:
+            alist = response.css('#link-report [class="review-content clearfix"]::text').extract()
         longcomment = []
         longcomment.append(''.join(alist))
-        if not longcomment:
-            alist = response.css('#link-report [class="review-content clearfix"] br::text').extract()
-            longcomment.append(''.join(alist))
         item['long_comment'] = longcomment
         yield item
-        
-
-

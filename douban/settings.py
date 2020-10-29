@@ -15,7 +15,7 @@ SPIDER_MODULES = ['douban.spiders']
 NEWSPIDER_MODULE = 'douban.spiders'
 
 MONGO_URL = 'mongodb+srv://kam:zzlljj123@cluster0-7upj8.azure.mongodb.net/test?retryWrites=true&w=majority'
-MONGO_DB = 'new_test'
+MONGO_DB = 'fyp'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'douban (+http://www.yourdomain.com)'
@@ -30,7 +30,7 @@ ROBOTSTXT_OBEY = False
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-#DOWNLOAD_DELAY = 3
+DOWNLOAD_DELAY = 2
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
 #CONCURRENT_REQUESTS_PER_IP = 16
@@ -65,15 +65,12 @@ ROBOTSTXT_OBEY = False
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   # 'douban.pipelines.DoubanPipeline': 300,
-   # 'douban.pipelines.MongoPipeline': 542,
+   'douban.pipelines.DoubanPipeline': 300,
+   # 'douban.pipelines.ImagePipeline':301,
+   'douban.pipelines.MongoPipeline': 542,
 }
 
-
-# ITEM_PIPELINES = {
-#     'douban.pipelines.ImagePipeline':300,
-# }
-
+# IMAGE_STORE = './images'
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html

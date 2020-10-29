@@ -1,1 +1,5 @@
-/all.log
+/Text
+*.txt
+*.log
+*.csv
+__pycache__

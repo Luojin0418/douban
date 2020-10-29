@@ -14,11 +14,12 @@ class DoubanItem(scrapy.Item):
     collection = 'film'
     url = scrapy.Field()
     title = scrapy.Field()
+    image_url = scrapy.Field()
     rating = scrapy.Field()
     rating_sum = scrapy.Field()
 
     director = scrapy.Field()
-    choreographer = scrapy.Field()
+    category = scrapy.Field()
     actor = scrapy.Field()
 
     describe = scrapy.Field()
