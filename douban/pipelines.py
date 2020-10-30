@@ -36,19 +36,22 @@ class DoubanPipeline:
                 f.write(''.join(item['long_comment']) + '\n')
         return item
 
-# # 没有作用！！并没有下载图片
-# class ImagePipeline(ImagesPipeline):
-#     def file_path(self, request, response=None, info=None):
-#         url = request.url
-#         return url.split('/')[-1]
+# 必须定义 IMAGES_STORE !!!
+# 不能打错
+class ImagePipeline(ImagesPipeline):
+    def file_path(self, request, response=None, info=None):
+        url = request.url
+        return url.split('/')[-1]
 
-#     def item_completed(self, results, item, info):
-#         if not item['image_url']:
-#             return DropItem(item['title'] + ' Image Download Failed')
-#         return item
+    def item_completed(self, results, item, info):
+        image_path = [x['image_url'] for ok, x in results if ok]
+        if not image_path:
+            return DropItem(item['title'] + ' Image Download Failed')
+        return item
 
-#     def get_media_requests(self, item, info):
-#         yield Request(item['image_url'])
+    def get_media_requests(self, item, info):
+        for i in item['image_url']:
+            yield Request(i)
 
 class MongoPipeline:
     def __init__(self, mongo_url, mongo_db):

@@ -29,7 +29,7 @@ class MovieSpider(scrapy.Spider):
         item = DoubanItem()
         # item['title'] = response.css('#content [property="v:itemreviewed"]::text').extract_first().strip('') + response.css('#content .year::text').extract_first()
         item['title'] = response.css('#content [property="v:itemreviewed"]::text').extract_first().strip('')
-        item['image_url'] = response.css('#mainpic img::attr(src)').extract_first()
+        item['image_url'] = response.css('#mainpic img::attr(src)').extract()
 
         item['rating'] = response.css('[typeof="v:Rating"] strong::text').extract_first().strip()
         item['rating_sum'] = response.css('[typeof="v:Rating"] .rating_sum a span::text').extract_first().strip()

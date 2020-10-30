@@ -66,11 +66,11 @@ DOWNLOAD_DELAY = 2
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
    'douban.pipelines.DoubanPipeline': 300,
-   # 'douban.pipelines.ImagePipeline':301,
+   'douban.pipelines.ImagePipeline': 400,
    'douban.pipelines.MongoPipeline': 542,
 }
 
-# IMAGE_STORE = './images'
+IMAGES_STORE = './images'
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
