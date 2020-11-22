@@ -28,8 +28,8 @@ class DoubanPipeline:
                         f.write(item[key] + ',')
                 f.write('\n')
         else:
-            # if not os.path.exists('Text'):
-            #     os.mkdir('Text')
+            if not os.path.exists('Text'):
+                os.mkdir('Text')
             with open('Text/' + item['title'] + '.txt', 'a', encoding='utf-8') as f:
                 f.write('---> ' + ''.join(item['long_comment']) + '\n')
             with open('long_comment.txt', 'a', encoding='utf-8') as f:
@@ -43,15 +43,9 @@ class ImagePipeline(ImagesPipeline):
         url = request.url
         return url.split('/')[-1]
 
-    def item_completed(self, results, item, info):
-        image_path = [x['image_url'] for ok, x in results if ok]
-        if not image_path:
-            return DropItem(item['title'] + ' Image Download Failed')
-        return item
-
     def get_media_requests(self, item, info):
-        for i in item['image_url']:
-            yield Request(i)
+        if isinstance(item, DoubanItem):
+            yield Request(item['image_url'])
 
 class MongoPipeline:
     def __init__(self, mongo_url, mongo_db):

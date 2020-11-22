@@ -4,20 +4,21 @@ import json
 from douban.items import DoubanItem, longComItem
 
 class MovieSpider(scrapy.Spider):
+    """
+    爬取豆瓣高分前100部
+    """
     name = 'movie'
     allowed_domains = ['movie.douban.com']
-    # start_urls = 'https://movie.douban.com/j/search_subjects?type=movie&tag=%E7%83%AD%E9%97%A8&sort=recommend&page_limit=500&page_start={uid}'
-    start_urls = 'https://movie.douban.com/j/search_subjects?type=movie&tag=%E8%B1%86%E7%93%A3%E9%AB%98%E5%88%86&sort=recommend&page_limit=70&page_start=40'
-    page_start = []
+    start_urls = 'https://movie.douban.com/j/search_subjects?type=movie&tag=%E8%B1%86%E7%93%A3%E9%AB%98%E5%88%86&sort=recommend&page_limit={page_limit}&page_start={page_start}'
     lcom_url = []
 
     def start_requests(self):
-        # for i in range(0, 20, 600):
-        #     self.page_start.append(i)
-        
-        # for page in (self.page_start):
-            # yield scrapy.Request(self.start_urls.format(uid=page), callback=self.parse_film)
-        yield scrapy.Request(self.start_urls, callback=self.parse_film)
+        maxMovie = 200 # 爬取的总电影数
+        page_start = 0 # 从第几部电影开始
+        page_limit = 20 # 一次爬取多少部电影
+
+        for page in range(page_start, maxMovie+page_limit, page_limit):
+            yield scrapy.Request(self.start_urls.format(page_limit=page_limit, page_start=page), callback=self.parse_film)
 
 
     def parse_film(self, response):
@@ -29,7 +30,7 @@ class MovieSpider(scrapy.Spider):
         item = DoubanItem()
         # item['title'] = response.css('#content [property="v:itemreviewed"]::text').extract_first().strip('') + response.css('#content .year::text').extract_first()
         item['title'] = response.css('#content [property="v:itemreviewed"]::text').extract_first().strip('')
-        item['image_url'] = response.css('#mainpic img::attr(src)').extract()
+        item['image_url'] = response.css('#mainpic img::attr(src)').extract_first()
 
         item['rating'] = response.css('[typeof="v:Rating"] strong::text').extract_first().strip()
         item['rating_sum'] = response.css('[typeof="v:Rating"] .rating_sum a span::text').extract_first().strip()
