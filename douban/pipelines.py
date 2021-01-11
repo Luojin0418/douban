@@ -16,24 +16,24 @@ import pandas as pd
 
 class DoubanPipeline:
     def process_item(self, item, spider):
-        if isinstance(item, DoubanItem): # Basic Item
-            with open('result.csv', 'a', encoding='ANSI') as f:
-                if os.path.getsize('result.csv') == 0:
-                    f.write("标题,评分,参与评分的人数,类别,导演,演员,简介\n")
-                for key in item.keys():
-                    if key == 'short_comment' or key == 'image_url': continue
-                    if type(item[key]) == list:
-                        f.write('/'.join(item[key][:4]) + ',')
-                    else:
-                        f.write(item[key] + ',')
-                f.write('\n')
-        else:
-            if not os.path.exists('Text'):
-                os.mkdir('Text')
-            with open('Text/' + item['title'] + '.txt', 'a', encoding='utf-8') as f:
-                f.write('---> ' + ''.join(item['long_comment']) + '\n')
-            with open('long_comment.txt', 'a', encoding='utf-8') as f:
-                f.write(''.join(item['long_comment']) + '\n')
+        # if isinstance(item, DoubanItem): # Basic Item
+        #     with open('result.csv', 'a', encoding='ANSI') as f:
+        #         if os.path.getsize('result.csv') == 0:
+        #             f.write("标题,评分,参与评分的人数,类别,导演,演员,简介\n")
+        #         for key in item.keys():
+        #             if key == 'short_comment' or key == 'image_url': continue
+        #             if type(item[key]) == list:
+        #                 f.write('/'.join(item[key][:4]) + ',')
+        #             else:
+        #                 f.write(item[key] + ',')
+        #         f.write('\n')
+        # else:
+        #     if not os.path.exists('Text'):
+        #         os.mkdir('Text')
+        #     with open('Text/' + item['title'] + '.txt', 'a', encoding='utf-8') as f:
+        #         f.write('---> ' + ''.join(item['long_comment']) + '\n')
+        #     with open('long_comment.txt', 'a', encoding='utf-8') as f:
+        #         f.write(''.join(item['long_comment']) + '\n')
         return item
 
 # 必须定义 IMAGES_STORE !!!
