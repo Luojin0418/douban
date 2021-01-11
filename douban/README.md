@@ -1,0 +1,9 @@
+# Douban
+
+此程序将调用Scrapy库爬取豆瓣上评分前500部的电影
+爬取标题，海报，用户短评，用户长评等一些基本信息，存入本地并存入数据库中，请根据自己的需要调整setting.py文件
+
+
+使用时请修改spiders里的douban.py文件
+添加你登录网站时的cookies
+如果有需要连接mongodb数据库的话，请将mongodb数据库的连接地址填写在setting.py和douban.py文件内
